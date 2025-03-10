@@ -50,9 +50,7 @@ def list_movies():
     prints a list of all movies in the given database
     """
     movies = movie_storage.get_movies()
-    print(f'{len(movies)} movies in total')
-    for key, value_dictionary in movies.items():
-        print(f'{key} ({value_dictionary["year"]}): {value_dictionary["rating"]}')
+
 
 
 def add_movie(title='', year='', rating=''):

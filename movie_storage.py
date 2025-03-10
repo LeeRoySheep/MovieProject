@@ -5,7 +5,7 @@ RED = '\033[91m'
 GREEN = '\033[92m'
 BLUE = '\033[94m'
 RESET = '\033[0m'
-MOVIE_FILE = 'movies.json'
+MOVIE_FILE = 'storageFiles/movies.json'
 
 def get_movies():
     """
@@ -35,5 +35,5 @@ def set_movies(movies_dictionary):
     """
     function to override the movies.json file after change...
     """
-    with open(MOVIE_FILE, 'w') as movies_json:
-        json.dump(movies_dictionary, movies_json)
+    with open(MOVIE_FILE, 'w', encoding="utf8") as movies_json:
+        json.dump(movies_dictionary, movies_json, indent=4)
