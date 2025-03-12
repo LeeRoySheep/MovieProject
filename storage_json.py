@@ -6,10 +6,19 @@ class StorageJson(IStorage):
     creating a Storage Json class to handle a storage
     working with a json file as storage file
     """
-    def __init__(self, file_path, owner = None):
+    def __init__(self, file_path, owner=None):
         self._file_path = file_path
-        if owner:
-            self._owner = owner
+        self._owner = owner
+
+
+    @property
+    def owner(self):
+        """
+        getter vor owner variable
+        :return: name of owner
+        """
+        return self._owner
+
 
     @property
     def file_path(self):
@@ -24,14 +33,14 @@ class StorageJson(IStorage):
 
 
     @property
-
     def list_movies(self):
         """method to create a movie list"""
         with (open(self.file_path, 'r') as json_reader):
             movie_dict = json.load(json_reader)
-        return {movie for movie in movie_dict}
+        return {title: movie for title, movie in movie_dict.items()}
 
-    def add_movie(self, title, year, rating, poster):
+
+    def add_movie(self, title, year, rating, poster=None):
         """method to add movie to database"""
         with open(self.file_path, 'r', encoding="utf8") as json_reader:
             movie_dict = json.load(json_reader)
@@ -42,20 +51,26 @@ class StorageJson(IStorage):
         else:
             raise ValueError("Sorry but this movie already exists!")
 
+
     def delete_movie(self, title):
         """delete file form dtatbase"""
         with open(self.file_path, 'r', encoding="utf8") as file:
             film_dict = json.load(file)
-        if title in [movie for movie, info in film_dict]:
+        if title in [movie for movie, info in film_dict.items()]:
             del film_dict[title]
+            with open(self.file_path, 'w', encoding="utf8") as writer:
+                json.dump(film_dict, writer, indent=4)
         else:
             raise ValueError(f"Sorry the movie {title} is not in this storage!")
+
 
     def update_movie(self, title, rating):
         """ update movie rating in storage"""
         with open(self.file_path, 'r', encoding='utf8') as file:
             film_dict = json.load(file)
-        if title in [movie for movie, info in film_dict]:
-            film_dict[title] = rating
+        if title in [movie for movie, info in film_dict.items()]:
+            film_dict[title]["rating"] = rating
+            with open(self.file_path, 'w', encoding="utf8") as writer:
+                json.dump(film_dict, writer, indent=4)
         else:
             raise ValueError("Sorry movie not in this storage!")

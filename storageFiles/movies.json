@@ -31,10 +31,6 @@
         "year": 1994,
         "rating": 8.9
     },
-    "The Matrix": {
-        "year": 1999,
-        "rating": 6.0
-    },
     "Fight Club": {
         "year": 1999,
         "rating": 8.8
@@ -43,5 +39,10 @@
         "year": 1992,
         "rating": 9.98,
         "poster": "a Poster"
+    },
+    "The Matrix": {
+        "year": 1999,
+        "rating": 9.2,
+        "poster": null
     }
 }
