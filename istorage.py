@@ -6,7 +6,7 @@ class IStorage(ABC):
 
     @abstractmethod
     def list_movies(self):
-        """abtract method to show movie list from Storage object"""
+        """abtract method to return movie list as dictionary from Storage object"""
         pass
 
     @abstractmethod

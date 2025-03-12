@@ -20,6 +20,16 @@ class StorageJson(IStorage):
         return self._owner
 
 
+    @owner.setter
+    def owner(self, new_owner):
+        """
+        setter to overwrite owner
+        :param new_owner: as string
+        :return: None
+        """
+        self._owner = new_owner
+
+
     @property
     def file_path(self):
         """magic getter method"""
@@ -42,8 +52,7 @@ class StorageJson(IStorage):
 
     def add_movie(self, title, year, rating, poster=None):
         """method to add movie to database"""
-        with open(self.file_path, 'r', encoding="utf8") as json_reader:
-            movie_dict = json.load(json_reader)
+        movie_dict = self.list_movies
         if title not in [movie for movie, info in movie_dict.items()]:
             movie_dict[title] = {"year": year, "rating": rating, "poster": poster}
             with open(self.file_path, "w", encoding="utf8") as file_writer:
@@ -54,8 +63,7 @@ class StorageJson(IStorage):
 
     def delete_movie(self, title):
         """delete file form dtatbase"""
-        with open(self.file_path, 'r', encoding="utf8") as file:
-            film_dict = json.load(file)
+        film_dict = self.list_movies
         if title in [movie for movie, info in film_dict.items()]:
             del film_dict[title]
             with open(self.file_path, 'w', encoding="utf8") as writer:
@@ -66,8 +74,7 @@ class StorageJson(IStorage):
 
     def update_movie(self, title, rating):
         """ update movie rating in storage"""
-        with open(self.file_path, 'r', encoding='utf8') as file:
-            film_dict = json.load(file)
+        film_dict = self.list_movies
         if title in [movie for movie, info in film_dict.items()]:
             film_dict[title]["rating"] = rating
             with open(self.file_path, 'w', encoding="utf8") as writer:
