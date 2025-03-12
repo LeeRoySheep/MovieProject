@@ -1,6 +1,12 @@
 import statistics
 import random
 from storage_json import StorageJson
+import requests
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+API_KEY = os.getenv('API_KEY')
 
 # Basic color codes
 RED = '\033[91m'
@@ -26,9 +32,9 @@ class MovieApp:
 
 
     @storage.setter
-    def storage(self, storage):
+    def storage(self, new_storage):
         """ setter for class variable _storage"""
-        self._storage = storage
+        self._storage = new_storage
 
 
 #-----------Print List of movies in stortage------------------------------
@@ -89,18 +95,30 @@ class MovieApp:
         while True:
             try:
                 title = self.get_title('Enter new movie name: ')
-                year = self.get_year('Enter new movie year: ')
-                rating = self.get_rating('Enter new movie rating: ')
+                if not title in movies.keys():
+                    request = requests.get(
+                        "http://www.omdbapi.com/?apikey="
+                        f"{API_KEY}&t={title.replace(" ","+")}"
+                    )
+                    if request.json()["Response"] == "True":
+                        year = request.json()["Year"]
+                        rating = request.json()["imdbRating"]
+                        poster = request.json()["Poster"]
+                        self.storage.add_movie(title, year, rating, poster)
+                        print(f'Movie {title} successfully added')
+                    elif request.json()["Response"] == "False":
+                        print(f"{RED}Movie {title} does not exist!{RESET}")
+                else:
+                    print(f'Sorry the movie {title} already in storage!')
                 break
             except ValueError as e:
                 print(e)
             except NameError as empty_title:
                 print(f'{RED}', empty_title, f'{RESET}')
-        if title not in movies:
-            self.storage.add_movie(title, year, rating)
-            print(f'Movie {title} successfully added')
-        else:
-            print(f'Sorry the movie {title} already exists!')
+            except requests.exceptions.ConnectionError as conn_err:
+                if "q" == input("Sorry no connection to server.To abort program enter q: "):
+                    exit()
+
 
 
     def _command_delete_movie(self):
