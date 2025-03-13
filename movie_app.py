@@ -366,14 +366,23 @@ class MovieApp:
         """
         new_html_string = "\n"
         for title, movie in self.storage.list_movies.items():
+            imdb_link = requests.get(
+                "http://www.omdbapi.com/?apikey="
+                f"{API_KEY}&t={title.replace(" ", "+")}"
+            ).json()
+            if imdb_link["Response"] == "True":
+                imdb_url = f"https://www.imdb.com/title/{imdb_link["imdbID"]}"
+            if imdb_link["Response"] == "False":
+                imdb_url=None
             new_html_string += "        <li>\n"
             new_html_string += "            <div class=\"movie\">\n"
             if "poster" in movie:
-                new_html_string += "                <img class=\"movie-poster\" "
+                new_html_string += f"                <a href=\"{imdb_url}\">"
+                new_html_string += "<img class=\"movie-poster\" "
                 if "note" in movie:
-                    new_html_string += f"src=\"{movie["poster"]}\" title=\"{movie["note"]}\" />\n"
+                    new_html_string += f"src=\"{movie["poster"]}\" title=\"{movie["note"]}\" /></a>\n"
                 else:
-                    new_html_string += f"src=\"{movie["poster"]}\" title=\"None\" />\n"
+                    new_html_string += f"src=\"{movie["poster"]}\" title=\"None\" /></a>\n"
             else:
                 new_html_string += "                <img class=\"movie-poster\" "
                 if "note" in movie:
