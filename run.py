@@ -37,4 +37,5 @@ def main():
     else:
         print("No argument passed! Please add argument for movie data.")
 
-main()
+if __name__ == "__main__":
+    main()
