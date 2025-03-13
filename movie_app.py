@@ -382,6 +382,7 @@ class MovieApp:
                     new_html_string += "src=\"None\" title=\"None\" />\n"
             new_html_string += f"            <div class=\"movie-title\">{title}</div>\n"
             new_html_string += f"            <div class=\"movie-year\">{movie["year"]}</div>\n"
+            new_html_string += f"            <div class=\"movie-rating\">Imdb:{movie["rating"]}</div>\n"
             new_html_string += "            </div>\n"
             new_html_string += "        </li>\n\n"
         return original_string.replace("        __TEMPLATE_MOVIE_GRID__", new_html_string)
