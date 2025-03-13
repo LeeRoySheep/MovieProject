@@ -4,6 +4,7 @@ from storage_json import StorageJson
 import requests
 import os
 from dotenv import load_dotenv
+import pycountry
 
 load_dotenv()
 API_KEY = os.getenv('API_KEY')
@@ -360,6 +361,18 @@ class MovieApp:
             writer.write(html_string)
 
 
+    def get_country_code(self, country_name):
+        """
+        function to generate 2 letter country code
+        :return:
+        """
+        try:
+            country = pycountry.countries.lookup(country_name)
+            return country.alpha_2  # Returns the two-letter country code
+        except LookupError:
+            return None  # Return None if the country is not found
+
+
     def html_creator(self, original_string):
         """
         creating a html code to insert in other html code
@@ -372,6 +385,16 @@ class MovieApp:
             ).json()
             if imdb_link["Response"] == "True":
                 imdb_url = f"https://www.imdb.com/title/{imdb_link["imdbID"]}"
+                countries = imdb_link["Country"].split(", ")
+                emojis = requests.get("https://api.github.com/emojis").json()
+                flags = []
+                for country in countries:
+                    if country.lower() in emojis.keys():
+                        flags.append(emojis[country.lower()])
+                    else:
+                        country_code = self.get_country_code(country)
+                        if country_code.lower() in emojis.keys():
+                            flags.append(emojis[country_code.lower()])
             if imdb_link["Response"] == "False":
                 imdb_url=None
             new_html_string += "        <li>\n"
@@ -390,6 +413,11 @@ class MovieApp:
                 else:
                     new_html_string += "src=\"None\" title=\"None\" />\n"
             new_html_string += f"            <div class=\"movie-title\">{title}</div>\n"
+            new_html_string += "<div class=\"movie-origin\">Country:"
+            for flag in flags:
+                new_html_string += "<img class=\"movie-origin\""
+                new_html_string += f" src=\"{flag}\" title=\"\"/>"
+            new_html_string += "</div>\n"
             new_html_string += f"            <div class=\"movie-year\">{movie["year"]}</div>\n"
             new_html_string += f"            <div class=\"movie-rating\">Imdb:{movie["rating"]}</div>\n"
             new_html_string += "            </div>\n"
