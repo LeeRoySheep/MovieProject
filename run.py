@@ -13,6 +13,7 @@ def main():
     """
     parser = argparse.ArgumentParser()
     parser.add_argument('filename', help="file to use as database", type=str)
+    parser.add_argument("owner", help="database owner", type=str)
     args = parser.parse_args()
     if args.filename:
         file = args.filename.split(".")
@@ -22,7 +23,10 @@ def main():
                 if not os.path.exists(file_path):
                     with open(file_path, "w", encoding="utf8") as file_writer:
                         json.dump({}, file_writer, indent=4)
-                this_app = MovieApp(StorageJson(file_path))
+                if args.owner:
+                    this_app = MovieApp(StorageJson(file_path, args.owner))
+                else:
+                    this_app = MovieApp(StorageJson(file_path))
                 this_app.run()
             elif file[1] == 'csv':
                 file_path = f"storageFiles/{args.filename}"

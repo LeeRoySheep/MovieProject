@@ -1,10 +1,12 @@
 import statistics
 import random
+import storage_csv
 from storage_json import StorageJson
 import requests
 import os
 from dotenv import load_dotenv
 import pycountry
+import json
 
 load_dotenv()
 API_KEY = os.getenv('API_KEY')
@@ -357,7 +359,11 @@ class MovieApp:
         :param html_file_path:
         :return:
         """
-        with open("webFiles/index.html", "w", encoding="utf8") as writer:
+        if self.storage.owner:
+            file = f"webFiles/{self.storage.owner}.html"
+        else:
+            file ="webFiles/index.html"
+        with open(file, "w", encoding="utf8") as writer:
             writer.write(html_string)
 
 
@@ -438,6 +444,49 @@ class MovieApp:
         print("Website generated successfully!")
 
 
+    def _command_change_db(self):
+        """
+        Bonus function to change database
+        :return:
+        """
+        while True:
+            try:
+                new_storage_path = self.get_title(
+                    f"{GREEN}Please enter new file for database:{RESET} "
+                )
+                if new_storage_path.split(".")[1] in ["json","csv"]:
+                    break
+                else:
+                    print(
+                        f"{RED}Please enter a storage file with either"
+                        f" .json or .csv as ending!{RESET}"
+                    )
+            except IndexError:
+                print(f"{RED}Wrong Input enter a .json or .csv file please!{RESET}")
+        new_file = f"storageFiles/{new_storage_path}"
+        if not os.path.exists(new_file):
+            if new_storage_path.split(".")[1] == "json":
+                with open(
+                   new_file, "w", encoding="utf8"
+                ) as file_writer:
+                    json.dump({}, file_writer, indent=4)
+            else:
+                open(new_file, "w", encoding="utf8").close()
+        if new_storage_path.split(".")[1] == 'json':
+            if input("Enter y if you want to add owner to storage: ") == 'y':
+                owner = self.get_title("Enter owner: ")
+                new_storage = StorageJson(new_file, owner)
+            else:
+                new_storage = StorageJson(new_file)
+        if new_storage_path.split(".")[1] == 'csv':
+            if input("Enter y if you want to add owner to storage: ") == 'y':
+                owner = self.get_title("Enter owner: ")
+                new_storage = storage_csv.StorageCsv(new_file, owner)
+            else:
+                new_storage = storage_csv.StorageCsv(new_file)
+        self.storage = new_storage
+
+
 #----------------Main Menue ---------------------------------
     def print_menu(self):
         """
@@ -461,7 +510,8 @@ class MovieApp:
         print('8. Movies sorted by rating')
         print('9. Movies sorted by year')
         print('10. Filter movies')
-        print(f'11. Generate Website{RESET}')
+        print('11. Generate Website')
+        print(f'12. Change Storage File{RESET}')
         print()
 
 
@@ -470,10 +520,10 @@ class MovieApp:
         function that checks for right user input when choosing from menu
         :return:
         """
-        menu_choices = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11']
+        menu_choices = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']
         input_string = input(prompt)
         if input_string not in menu_choices:
-            raise ValueError(f"{RED}Choice must be a digit within 0 and 11{RESET}")
+            raise ValueError(f"{RED}Choice must be a digit within 0 and 12{RESET}")
         else:
             return input_string
 
@@ -495,7 +545,8 @@ class MovieApp:
             '8': self._command_sorted_movies,
             '9': self._command_sorted_movies,
             '10': self._command_filter_movies,
-            '11': self._generate_website
+            '11': self._generate_website,
+            '12': self._command_change_db
         }
         while True:
             try:
