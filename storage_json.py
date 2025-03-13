@@ -72,11 +72,11 @@ class StorageJson(IStorage):
             raise ValueError(f"Sorry the movie {title} is not in this storage!")
 
 
-    def update_movie(self, title, rating):
+    def update_movie(self, title, note):
         """ update movie rating in storage"""
         film_dict = self.list_movies
         if title in [movie for movie, info in film_dict.items()]:
-            film_dict[title]["rating"] = rating
+            film_dict[title]["note"] = note
             with open(self.file_path, 'w', encoding="utf8") as writer:
                 json.dump(film_dict, writer, indent=4)
         else:

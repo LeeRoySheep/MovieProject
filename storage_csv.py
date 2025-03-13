@@ -117,7 +117,7 @@ class StorageCsv(IStorage):
         self.list_movies = movies
 
 
-    def update_movie(self, title, rating):
+    def update_movie(self, title, note):
         """
         function to update rating from movie in storage
         :param title:
@@ -125,5 +125,5 @@ class StorageCsv(IStorage):
         :return:
         """
         movies = self.list_movies
-        movies[title]["rating"] = rating
+        movies[title]["note"] = note
         self.list_movies = movies

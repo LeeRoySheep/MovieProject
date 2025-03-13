@@ -149,12 +149,12 @@ class MovieApp:
         while True:
             try:
                 title = input("Enter movie name: ")
-                rating = self.get_rating('Enter new movie rating: ')
+                note = self.get_title('Enter a note: ')
                 break
             except ValueError as value_exception:
                 print(value_exception)
         try:
-            self.storage.update_movie(title, rating)
+            self.storage.update_movie(title, note)
             print(f"Movie {title} successfully updated")
         except ValueError as value_exception:
             print(value_exception)
@@ -370,10 +370,16 @@ class MovieApp:
             new_html_string += "            <div class=\"movie\">\n"
             if "poster" in movie:
                 new_html_string += "                <img class=\"movie-poster\" "
-                new_html_string += f"src=\"{movie["poster"]}\" title=\"\" />\n"
+                if "note" in movie:
+                    new_html_string += f"src=\"{movie["poster"]}\" title=\"{movie["note"]}\" />\n"
+                else:
+                    new_html_string += f"src=\"{movie["poster"]}\" title=\"None\" />\n"
             else:
                 new_html_string += "                <img class=\"movie-poster\" "
-                new_html_string += f"src=\"EMPTY\" title=\"None\" />\n"
+                if "note" in movie:
+                    new_html_string += f"src=\"EMPTY\" title=\"{movie["note"]}\" />\n"
+                else:
+                    new_html_string += "src=\"None\" title=\"None\" />\n"
             new_html_string += f"            <div class=\"movie-title\">{title}</div>\n"
             new_html_string += f"            <div class=\"movie-year\">{movie["year"]}</div>\n"
             new_html_string += "            </div>\n"
