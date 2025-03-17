@@ -105,7 +105,7 @@ class MovieApp:
                     )
                     if request.json()["Response"] == "True":
                         year = request.json()["Year"]
-                        rating = request.json()["imdbRating"]
+                        rating = float(request.json()["imdbRating"])
                         poster = request.json()["Poster"]
                         self.storage.add_movie(title, year, rating, poster)
                         print(f'Movie {title} successfully added')
