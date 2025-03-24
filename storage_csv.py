@@ -117,7 +117,7 @@ class StorageCsv(IStorage):
             if title in movie:
                 del movies[title]
                 self.list_movies = movies
-                break
+                return None
         raise ValueError(f"{title} not in Database!")
 
 

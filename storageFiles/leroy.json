@@ -1,0 +1,68 @@
+{
+    "Titanic": {
+        "year": "1997",
+        "rating": 7.9,
+        "poster": "https://m.media-amazon.com/images/M/MV5BYzYyN2FiZmUtYWYzMy00MzViLWJkZTMtOGY1ZjgzNWMwN2YxXkEyXkFqcGc@._V1_SX300.jpg"
+    },
+    "The fifth element": {
+        "year": "1997",
+        "rating": 7.6,
+        "poster": "https://m.media-amazon.com/images/M/MV5BODU4ZTE5MWYtNmY2MC00NDkyLTk0NDgtNTk5YjgzMzc4NmQwXkEyXkFqcGc@._V1_SX300.jpg"
+    },
+    "Matrix": {
+        "year": "1993",
+        "rating": 7.2,
+        "poster": "https://m.media-amazon.com/images/M/MV5BM2JiZjU1NmQtNjg1Ni00NjA3LTk2MjMtNjYxMTgxODY0NjRhXkEyXkFqcGc@._V1_SX300.jpg"
+    },
+    "The Matrix": {
+        "year": "1999",
+        "rating": 8.7,
+        "poster": "https://m.media-amazon.com/images/M/MV5BN2NmN2VhMTQtMDNiOS00NDlhLTliMjgtODE2ZTY0ODQyNDRhXkEyXkFqcGc@._V1_SX300.jpg"
+    },
+    "Fight Club": {
+        "year": "1999",
+        "rating": 8.8,
+        "poster": "https://m.media-amazon.com/images/M/MV5BOTgyOGQ1NDItNGU3Ny00MjU3LTg2YWEtNmEyYjBiMjI1Y2M5XkEyXkFqcGc@._V1_SX300.jpg"
+    },
+    "Forrest Gump": {
+        "year": "1994",
+        "rating": 8.8,
+        "poster": "https://m.media-amazon.com/images/M/MV5BNDYwNzVjMTItZmU5YS00YjQ5LTljYjgtMjY2NDVmYWMyNWFmXkEyXkFqcGc@._V1_SX300.jpg"
+    },
+    "Schindler's List": {
+        "year": "1993",
+        "rating": 9.0,
+        "poster": "https://m.media-amazon.com/images/M/MV5BNjM1ZDQxYWUtMzQyZS00MTE1LWJmZGYtNGUyNTdlYjM3ZmVmXkEyXkFqcGc@._V1_SX300.jpg"
+    },
+    "Fear and Loathing in Las Vegas": {
+        "year": "1998",
+        "rating": 7.5,
+        "poster": "https://m.media-amazon.com/images/M/MV5BNjFkNjdiZjUtNzUzNy00NWM5LWFlNDUtNTRiYmJiZWNiYjkwXkEyXkFqcGc@._V1_SX300.jpg"
+    },
+    "Pulp Fiction": {
+        "year": "1994",
+        "rating": 8.9,
+        "poster": "https://m.media-amazon.com/images/M/MV5BYTViYTE3ZGQtNDBlMC00ZTAyLTkyODMtZGRiZDg0MjA2YThkXkEyXkFqcGc@._V1_SX300.jpg"
+    },
+    "Planet Terror": {
+        "year": "2007",
+        "rating": 7.0,
+        "poster": "https://m.media-amazon.com/images/M/MV5BNmEzZTAxNDQtN2ZmMy00NGNlLWI3NDYtNGI3ZTlkNWU1NWZhXkEyXkFqcGc@._V1_SX300.jpg"
+    },
+    "Avatar": {
+        "year": "2009",
+        "rating": 7.9,
+        "poster": "https://m.media-amazon.com/images/M/MV5BMDEzMmQwZjctZWU2My00MWNlLWE0NjItMDJlYTRlNGJiZjcyXkEyXkFqcGc@._V1_SX300.jpg"
+    },
+    "The Goonies": {
+        "year": "1985",
+        "rating": 7.7,
+        "poster": "https://m.media-amazon.com/images/M/MV5BMjE1OWU4ODEtZmEzMC00NTcwLWFlMWUtYjhlNzExOTIxYzVlXkEyXkFqcGc@._V1_SX300.jpg",
+        "note": "Must watch this old classic"
+    },
+    "Memento": {
+        "year": "2000",
+        "rating": 8.4,
+        "poster": "https://m.media-amazon.com/images/M/MV5BYmQ3MjliNjAtNWFiZS00YWI1LTlmZTktMzBiNDE1NjRhZjU0XkEyXkFqcGc@._V1_SX300.jpg"
+    }
+}
