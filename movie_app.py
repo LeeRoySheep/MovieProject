@@ -551,7 +551,7 @@ class MovieApp:
         while True:
             try:
                 self.print_menu()
-                user_input = self.menu_choice(f'{GREEN}Enter choice (0-11): {RESET}')
+                user_input = self.menu_choice(f'{GREEN}Enter choice (0-12): {RESET}')
                 break
             except ValueError as wrongchoice:
                 print(wrongchoice)
