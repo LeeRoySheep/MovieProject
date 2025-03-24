@@ -280,7 +280,7 @@ class MovieApp:
         movies = self.storage.list_movies
         distant_movies = []
         for key in movies:
-            if search_string.lower() == key.lower():
+            if search_string.lower() in (key.lower()):
                 print(f'{key}, {movies[key]["rating"]}')
                 found = True
             elif self.similarity(search_string.lower(), key.lower()) > 0.21:
@@ -333,8 +333,8 @@ class MovieApp:
         print()
         filtered_movies_dict = {
             key: value_dict for key, value_dict in self.storage.list_movies.items()
-            if value_dict["rating"] >= min_rating and value_dict["year"] >= min_year
-                and value_dict["year"] <= max_year
+            if value_dict["rating"] >= min_rating and int(value_dict["year"]) >= min_year
+                and int(value_dict["year"]) <= max_year
         }
         print("Filtered Movies:")
         for title, values in filtered_movies_dict.items():
@@ -569,7 +569,7 @@ class MovieApp:
             while True:
                 try:
                     self.print_menu()
-                    user_input = self.menu_choice(f'{GREEN}Enter choice (0-11): {RESET}')
+                    user_input = self.menu_choice(f'{GREEN}Enter choice (0-12): {RESET}')
                     break
                 except ValueError as wrongchoice:
                     print(wrongchoice)

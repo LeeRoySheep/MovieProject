@@ -113,8 +113,12 @@ class StorageCsv(IStorage):
         :return:
         """
         movies = self.list_movies
-        del movies[title]
-        self.list_movies = movies
+        for movie in movies.keys():
+            if title in movie:
+                del movies[title]
+                self.list_movies = movies
+                break
+        raise ValueError(f"{title} not in Database!")
 
 
     def update_movie(self, title, note):
