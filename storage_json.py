@@ -49,35 +49,7 @@ class StorageJson(IStorage):
             movie_dict = json.load(json_reader)
         return {title: movie for title, movie in movie_dict.items()}
 
-
-    def add_movie(self, title, year, rating, poster=None):
-        """method to add movie to database"""
-        movie_dict = self.list_movies
-        if title not in [movie for movie, info in movie_dict.items()]:
-            movie_dict[title] = {"year": year, "rating": rating, "poster": poster}
-            with open(self.file_path, "w", encoding="utf8") as file_writer:
-                json.dump(movie_dict, file_writer, indent=4)
-        else:
-            raise ValueError("Sorry but this movie already exists!")
-
-
-    def delete_movie(self, title):
-        """delete file form dtatbase"""
-        film_dict = self.list_movies
-        if title in [movie for movie, info in film_dict.items()]:
-            del film_dict[title]
-            with open(self.file_path, 'w', encoding="utf8") as writer:
-                json.dump(film_dict, writer, indent=4)
-        else:
-            raise ValueError(f"Sorry the movie {title} is not in this storage!")
-
-
-    def update_movie(self, title, note):
-        """ update movie rating in storage"""
-        film_dict = self.list_movies
-        if title in [movie for movie, info in film_dict.items()]:
-            film_dict[title]["note"] = note
-            with open(self.file_path, 'w', encoding="utf8") as writer:
-                json.dump(film_dict, writer, indent=4)
-        else:
-            raise ValueError("Sorry movie not in this storage!")
+    @list_movies.setter
+    def list_movies(self, movie_dict):
+        with open(self.file_path, 'w', encoding="utf8") as writer:
+            json.dump(movie_dict, writer, indent=4)
