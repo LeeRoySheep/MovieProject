@@ -224,7 +224,8 @@ class MovieApp:
         best_movies = self.similar_val(best, movies)
         worst = min(rating_lst)
         worst_movies = self.similar_val(worst, movies)
-        self.print_movie_stats(avrg_rate, median_rate, best, best_movies, worst, worst_movies)
+        self.print_movie_stats(avrg_rate, median_rate, best, best_movies,
+                               worst, worst_movies)
 
 
 #--------------random Movie-----------------------------------
@@ -237,7 +238,8 @@ class MovieApp:
         for key in movies:
             key_list.append(key)
         rand_num = random.randrange(len(movies) - 1)
-        print(f"Your movie for tonight: {key_list[rand_num]}, it's rated {movies[key_list[rand_num]]['rating']}")
+        print(f"Your movie for tonight: {key_list[rand_num]}, \
+            it's rated {movies[key_list[rand_num]]['rating']}")
 
 
 #----------------search movie---------------------------------
@@ -250,13 +252,15 @@ class MovieApp:
         if length1 < length2:
             string1, string2 = string2, string1
             length1, length2 = length2, length1
-        distance = [list(range(length2 + 1))] + [[i] + [0] * length2 for i in range(1, length1 + 1)]
+        distance = [list(range(length2 + 1))] + [[i] + [0] * length2 \
+                                                 for i in range(1, length1 + 1)]
         for j in range(1, length2 + 1):
             for i in range(1, length1 + 1):
                 if string1[i - 1] == string2[j - 1]:
                     distance[i][j] = distance[i - 1][j - 1]
                 else:
-                    distance[i][j] = min(distance[i - 1][j], distance[i][j - 1], distance[i - 1][j - 1]) + 1
+                    distance[i][j] = min(distance[i - 1][j], distance[i][j - 1],
+                                         distance[i - 1][j - 1]) + 1
         return distance[length1][length2]
 
 
@@ -301,16 +305,19 @@ class MovieApp:
         """
         movies_dict = self.storage.list_movies
         if sorting_value == "year":
-            input_order = input("Please enter c if you want to keep the chronological order or anything else if not: ")
+            input_order = input("Please enter c if you want \
+                to keep the chronological order or anything else if not: ")
             other_val = 'rating'
             if input_order != "c":
                 order = False
         else:
             other_val = 'year'
-        sortedDict = dict(sorted(movies_dict.items(), key=lambda x: x[1][sorting_value], reverse=order))
-        for key in sortedDict:
+        sorted_dict = dict(sorted(movies_dict.items(), key=lambda x: x[1][sorting_value],
+                                 reverse=order))
+        for key in sorted_dict:
             print(
-                f'{key} with {sorting_value}: {sortedDict[key][sorting_value]} and {other_val}: {sortedDict[key][other_val]}')
+                f'{key} with {sorting_value}: {sorted_dict[key][sorting_value]} \
+                and {other_val}: {sorted_dict[key][other_val]}')
 
 
 #-----------------filter movies---------------------------------
@@ -356,7 +363,7 @@ class MovieApp:
     def html_template_string(self, html_string):
         """
         setter method to write html to the local file "webFiles/index.html"
-        :param html_file_path:
+        :param html_string
         :return:
         """
         if self.storage.owner:
@@ -366,11 +373,10 @@ class MovieApp:
         with open(file, "w", encoding="utf8") as writer:
             writer.write(html_string)
 
-
-    def get_country_code(self, country_name):
+    def get_country_code(self, country_name: str) -> str | None:
         """
-        function to generate 2 letter country code
-        :return:
+            function to generate 2 letter country code
+            :return:
         """
         try:
             country = pycountry.countries.lookup(country_name)
@@ -387,7 +393,7 @@ class MovieApp:
         for title, movie in self.storage.list_movies.items():
             imdb_link = requests.get(
                 "http://www.omdbapi.com/?apikey="
-                f"{API_KEY}&t={title.replace(" ", "+")}"
+                f"{API_KEY}&t={title.replace(" ", "+")}",timeout=15
             ).json()
             if imdb_link["Response"] == "True":
                 imdb_url = f"https://www.imdb.com/title/{imdb_link["imdbID"]}"
@@ -425,7 +431,8 @@ class MovieApp:
                 new_html_string += f" src=\"{flag}\" title=\"\"/>"
             new_html_string += "</div>\n"
             new_html_string += f"            <div class=\"movie-year\">{movie["year"]}</div>\n"
-            new_html_string += f"            <div class=\"movie-rating\">Imdb:{movie["rating"]}</div>\n"
+            new_html_string += f"            <div class=\"movie-rating\">"
+            new_html_string += f"Imdb:{movie["rating"]}</div>\n"
             new_html_string += "            </div>\n"
             new_html_string += "        </li>\n\n"
         return original_string.replace("        __TEMPLATE_MOVIE_GRID__", new_html_string)
