@@ -46,7 +46,7 @@ class StorageCsv(IStorage):
 
 
     @property
-    def list_movies(self):
+    def movies(self):
         """ Create a dictionary from a csv file"""
         with open(self.file_path, "r", encoding="utf-8") as file:
             reader = csv.DictReader(file)
@@ -67,8 +67,8 @@ class StorageCsv(IStorage):
         return movie_dict
 
 
-    @list_movies.setter
-    def list_movies(self, movie_dict):
+    @movies.setter
+    def movies(self, movie_dict):
         """function to crate dict list from nested dict and saves as csv file"""
         movie_lst = []
         for key, val in movie_dict.items():

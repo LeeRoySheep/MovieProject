@@ -8,14 +8,14 @@ class IStorage(ABC):
 
     @property
     @abstractmethod
-    def list_movies(self)->dict:
+    def movies(self)->dict:
         """abtract method to return movie list as dictionary from Storage object"""
         pass
 
 
-    @list_movies.setter
+    @movies.setter
     @abstractmethod
-    def list_movies(self, movie_dict):
+    def movies(self, movie_dict):
         """abtract method to set movie list as dictionary from Storage object"""
         pass
 
@@ -29,10 +29,10 @@ class IStorage(ABC):
         :param poster:
         :return: None
         """
-        movie_dict = self.list_movies
+        movie_dict = self.movies
         if title not in [movie for movie, info in movie_dict.items()]:
             movie_dict[title] = {"year": year, "rating": rating, "poster": poster}
-            self.list_movies = movie_dict
+            self.movies = movie_dict
         else:
             raise ValueError("Sorry but this movie already exists!")
 
@@ -43,11 +43,11 @@ class IStorage(ABC):
         :param title:
         :return:
         """
-        movies = self.list_movies
+        movies = self.movies
         for movie in movies.keys():
             if title in movie:
                 del movies[title]
-                self.list_movies = movies
+                self.movies = movies
                 return None
         raise ValueError(f"{title} not in Database!")
 
@@ -59,7 +59,7 @@ class IStorage(ABC):
         :param rating:
         :return:
         """
-        movies = self.list_movies
+        movies = self.movies
         if title not in [movie for movie, info in movies.items()]:
             raise ValueError("Sorry movie not in this storage!")
         movies[title]["note"] = note

@@ -46,7 +46,7 @@ class MovieApp:
         prints all movies to terminal
         :return: None
         """
-        movies = self.storage.list_movies
+        movies = self.storage.movies
         print(f"A list of {len(movies)} in the given storage.")
         for movie_name, movie_dict in movies.items():
             print(f"{movie_name} ({movie_dict["year"]}): {movie_dict["rating"]}")
@@ -94,14 +94,15 @@ class MovieApp:
         Loads the information from storage, add the movie,
         and saves it. The function doesn't need to validate the input.
         """
-        movies = self.storage.list_movies
+        movies = self.storage.movies
         while True:
             try:
                 title = self.get_title('Enter new movie name: ')
                 if not title in movies.keys():
                     request = requests.get(
                         "http://www.omdbapi.com/?apikey="
-                        f"{API_KEY}&t={title.replace(" ","+")}"
+                        f"{API_KEY}&t={title.replace(" ","+")}",
+                        timeout=15
                     )
                     if request.json()["Response"] == "True":
                         year = request.json()["Year"]
@@ -216,7 +217,7 @@ class MovieApp:
         """
         method to create stats of the movie list and prints them to screen
         """
-        movies = self._storage.list_movies
+        movies = self._storage.movies
         rating_lst = [value_dictionary["rating"] for value_dictionary in movies.values()]
         avrg_rate = self.calc_avrg(movies)
         median_rate = statistics.median(rating_lst)
@@ -233,13 +234,15 @@ class MovieApp:
         """
         method to cal a random movie from Dictionary
         """
-        movies = self.storage.list_movies
+        movies = self.storage.movies
         key_list = []
         for key in movies:
             key_list.append(key)
         rand_num = random.randrange(len(movies) - 1)
-        print(f"Your movie for tonight: {key_list[rand_num]}, \
-            it's rated {movies[key_list[rand_num]]['rating']}")
+        print(
+            f"Your movie for tonight: {key_list[rand_num]}, "
+            f"it's rated {movies[key_list[rand_num]]['rating']}"
+        )
 
 
 #----------------search movie---------------------------------
@@ -281,7 +284,7 @@ class MovieApp:
         search_string = input(f'{GREEN}Enter part of movie name: {RESET}')
         print()
         found = False
-        movies = self.storage.list_movies
+        movies = self.storage.movies
         distant_movies = []
         for key in movies:
             if search_string.lower() in (key.lower()):
@@ -303,10 +306,12 @@ class MovieApp:
         """
         function so print movies sorted by rating in descending order
         """
-        movies_dict = self.storage.list_movies
+        movies_dict = self.storage.movies
         if sorting_value == "year":
-            input_order = input("Please enter c if you want \
-                to keep the chronological order or anything else if not: ")
+            input_order = input(
+                "Please enter c if you want "
+                "to keep the chronological order or anything else if not: "
+            )
             other_val = 'rating'
             if input_order != "c":
                 order = False
@@ -316,8 +321,9 @@ class MovieApp:
                                  reverse=order))
         for key in sorted_dict:
             print(
-                f'{key} with {sorting_value}: {sorted_dict[key][sorting_value]} \
-                and {other_val}: {sorted_dict[key][other_val]}')
+                f'{key} with {sorting_value}: {sorted_dict[key][sorting_value]} '
+                f'and {other_val}: {sorted_dict[key][other_val]}'
+            )
 
 
 #-----------------filter movies---------------------------------
@@ -326,7 +332,8 @@ class MovieApp:
         filter function to print filtered movie list depending on user input
         """
         try:
-            min_rating = self.get_rating("Enter minimum rating (leave blank for no minimum rating): ")
+            min_rating = self.get_rating("Enter minimum rating (leave blank for no"
+                                         " minimum rating): ")
         except ValueError as value_error:
             print("Minimum rating set to default!")
         try:
@@ -339,7 +346,7 @@ class MovieApp:
             print("Maximum year set to default")
         print()
         filtered_movies_dict = {
-            key: value_dict for key, value_dict in self.storage.list_movies.items()
+            key: value_dict for key, value_dict in self.storage.movies.items()
             if value_dict["rating"] >= min_rating and int(value_dict["year"]) >= min_year
                 and int(value_dict["year"]) <= max_year
         }
@@ -390,7 +397,7 @@ class MovieApp:
         creating a html code to insert in other html code
         """
         new_html_string = "\n"
-        for title, movie in self.storage.list_movies.items():
+        for title, movie in self.storage.movies.items():
             imdb_link = requests.get(
                 "http://www.omdbapi.com/?apikey="
                 f"{API_KEY}&t={title.replace(" ", "+")}",timeout=15
@@ -398,7 +405,7 @@ class MovieApp:
             if imdb_link["Response"] == "True":
                 imdb_url = f"https://www.imdb.com/title/{imdb_link["imdbID"]}"
                 countries = imdb_link["Country"].split(", ")
-                emojis = requests.get("https://api.github.com/emojis").json()
+                emojis = requests.get("https://api.github.com/emojis",timeout=15).json()
                 flags = []
                 for country in countries:
                     if country.lower() in emojis.keys():
@@ -415,7 +422,8 @@ class MovieApp:
                 new_html_string += f"                <a href=\"{imdb_url}\">"
                 new_html_string += "<img class=\"movie-poster\" "
                 if "note" in movie:
-                    new_html_string += f"src=\"{movie["poster"]}\" title=\"{movie["note"]}\" /></a>\n"
+                    new_html_string += (f"src=\"{movie["poster"]}\" title=\"{movie["note"]}\" />"
+                                        f"</a>\n")
                 else:
                     new_html_string += f"src=\"{movie["poster"]}\" title=\"None\" /></a>\n"
             else:

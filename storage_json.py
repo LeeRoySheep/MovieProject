@@ -43,13 +43,13 @@ class StorageJson(IStorage):
 
 
     @property
-    def list_movies(self):
+    def movies(self):
         """method to create a movie list"""
         with open(self.file_path, 'r') as json_reader:
             movie_dict = json.load(json_reader)
         return {title: movie for title, movie in movie_dict.items()}
 
-    @list_movies.setter
-    def list_movies(self, movie_dict):
+    @movies.setter
+    def movies(self, movie_dict):
         with open(self.file_path, 'w', encoding="utf8") as writer:
             json.dump(movie_dict, writer, indent=4)
